@@ -1,9 +1,34 @@
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
-import reactPlugin from 'eslint-plugin-react'
+import reactFeatures from 'eslint-plugin-react-features'
 import stylistic from '@stylistic/eslint-plugin'
 import tseslint from 'typescript-eslint'
+
+// The rules eslint-plugin-react's `recommended` preset enables, under the same
+// names from eslint-plugin-react-features (registered below as `react`).
+const reactRecommended = Object.fromEntries(
+  [
+    'display-name',
+    'jsx-key',
+    'jsx-no-comment-textnodes',
+    'jsx-no-duplicate-props',
+    'jsx-no-target-blank',
+    'jsx-no-undef',
+    'jsx-uses-vars',
+    'no-children-prop',
+    'no-danger-with-children',
+    'no-deprecated',
+    'no-direct-mutation-state',
+    'no-find-dom-node',
+    'no-is-mounted',
+    'no-render-return-value',
+    'no-string-refs',
+    'no-unescaped-entities',
+    'no-unknown-property',
+    'require-render-return',
+  ].map((rule) => [`react/${rule}`, 'error'])
+)
 
 export default tseslint.config(
   {
@@ -59,11 +84,11 @@ export default tseslint.config(
       },
     },
     plugins: {
-      react: reactPlugin,
+      react: reactFeatures,
       'react-hooks': reactHooks,
     },
     rules: {
-      ...reactPlugin.configs.recommended.rules,
+      ...reactRecommended,
       // The two classic hooks rules, listed explicitly rather than via the
       // plugin's `recommended` preset, which also enables the React Compiler
       // rule set. Adopting those is a separate decision.
@@ -80,14 +105,7 @@ export default tseslint.config(
     },
     settings: {
       react: {
-        // Pinned rather than `'detect'`: eslint-plugin-react's detection
-        // calls `context.getFilename()`, which ESLint 10 removed, so it
-        // crashes on the first rule that needs the version. Everything else
-        // in the plugin runs on ESLint 10. Switch back to `'detect'` once a
-        // release with ESLint 10 support ships
-        // (https://github.com/jsx-eslint/eslint-plugin-react/pull/4022) and
-        // drop the matching `peerDependencyRules` entry in package.json.
-        version: '19.3.0',
+        version: 'detect',
       },
     },
   },
@@ -102,11 +120,11 @@ export default tseslint.config(
       },
     },
     plugins: {
-      react: reactPlugin,
+      react: reactFeatures,
       'react-hooks': reactHooks,
     },
     rules: {
-      ...reactPlugin.configs.recommended.rules,
+      ...reactRecommended,
       // The two classic hooks rules, listed explicitly rather than via the
       // plugin's `recommended` preset, which also enables the React Compiler
       // rule set. Adopting those is a separate decision.
@@ -123,14 +141,7 @@ export default tseslint.config(
     },
     settings: {
       react: {
-        // Pinned rather than `'detect'`: eslint-plugin-react's detection
-        // calls `context.getFilename()`, which ESLint 10 removed, so it
-        // crashes on the first rule that needs the version. Everything else
-        // in the plugin runs on ESLint 10. Switch back to `'detect'` once a
-        // release with ESLint 10 support ships
-        // (https://github.com/jsx-eslint/eslint-plugin-react/pull/4022) and
-        // drop the matching `peerDependencyRules` entry in package.json.
-        version: '19.3.0',
+        version: 'detect',
       },
     },
   }
